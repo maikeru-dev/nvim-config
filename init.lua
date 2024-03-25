@@ -4,15 +4,20 @@ if vim.g.neovide then
   vim.o.guifont = "CaskaydiaCove Nerd Font:h12"
 end
 
-vim.g.clipboard = {
-  name = "win32yank-wsl",
-  copy = {
-    ["+"] = { "win32yank.exe", "-i", "--crlf" },
-    ["*"] = { "win32yank.exe", "-i", "--crlf" },
-  },
-  paste = {
-    ["+"] = { "win32yank.exe", "-o", "--lf" },
-    ["*"] = { "win32yank.exe", "-o", "--lf" },
-  },
-  cache_enabled = false,
-}
+-- Use wl-copy for clipboard operations
+if vim.fn.has("clipboard") then
+  vim.opt.clipboard:append("unnamedplus")
+  vim.opt.clipboard:append("unnamed")
+  vim.g.clipboard = {
+    name = "wl-copy",
+    copy = {
+      ["+"] = "wl-copy",
+      ["*"] = "wl-copy",
+    },
+    paste = {
+      ["+"] = "wl-paste",
+      ["*"] = "wl-paste",
+    },
+    cache_enabled = 0,
+  }
+end
